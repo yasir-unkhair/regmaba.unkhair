@@ -1,0 +1,116 @@
+<div>
+    <div class="row m-b-20">
+        <div class="col-md-12">
+            <center><img src="{{ asset('images/unkhair.png') }}" class="logo-icon" alt=""></center><br>
+            <h4 class="text-center">{{ $judul }}</h4>
+        </div>
+    </div>
+    <hr>
+
+    @if ($flash = flashAllert())
+        {!! $flash !!}
+    @endif
+
+    @if ($get)
+        <form wire:submit="cekdata">
+            @csrf
+            <input type="hidden" name="id_peserta" value="{{ $get['id_peserta'] }}">
+        @else
+            <form wire:submit="checklogin">
+                @csrf
+    @endif
+
+    @empty($get)
+        <div class="form-group rounded">
+            <label><b>Nomor Ujian (Peserta):</b></label>
+            <input type="text" name="nomor_peserta"
+                class="form-control form-control-lg @error('nomor_peserta') form-control-danger @enderror"
+                value="{{ $get ? $get['nomor_peserta'] : old('nomor_peserta') }}" required=""
+                placeholder="Masukkan Nomor Ujian (Peserta)">
+            <span class="form-bar"></span>
+            @error('nomor_peserta')
+                <span class="text-danger">{!! $message !!}</span>
+            @enderror
+        </div>
+
+        <div class="form-group rounded">
+            <label><b>NISN:</b></label>
+            <input type="text" name="nisn"
+                class="form-control form-control-lg @error('nisn') form-control-danger @enderror"
+                value="{{ $get ? $get['nisn'] : old('nisn') }}" required="" placeholder="Masukkan NISN">
+            <span class="form-bar"></span>
+            @error('nisn')
+                <span class="text-danger">{!! $message !!}</span>
+            @enderror
+        </div>
+    @endempty
+
+    @if ($get)
+        <table class="table border border-black" style="font-size:13px;">
+            <tr>
+                <td class="text-right" width="25%">Nomor Peserta :</td>
+                <td width="75%">{{ $get['nomor_peserta'] }}</td>
+            </tr>
+            <tr>
+                <td class="text-right">NISN :</td>
+                <td>{{ $get['nisn'] }}</td>
+            </tr>
+            <tr>
+                <td class="text-right">Nama Peserta :</td>
+                <td>{{ $get['nama_peserta'] }}</td>
+            </tr>
+            <tr>
+                <td class="text-right">Program Studi :</td>
+                <td>{{ $get['prodi'] }}</td>
+            </tr>
+            <tr>
+                <td class="text-right">Jalur :</td>
+                <td>{{ $get['jalur'] }}</td>
+            </tr>
+        </table>
+        <br>
+        <div class="form-group rounded">
+            <label for=""><b>E-Mail Konfirmasi:</b></label>
+            <input type="text" name="email"
+                class="form-control form-control-lg @error('email') form-control-danger @enderror"
+                value="{{ old('email', $get['email']) }}" placeholder="Masukkan E-Mail Konfirmasi Anda" autofocus>
+            @error('email')
+                <span class="text-danger">{{ $message }}</span>
+            @enderror
+        </div>
+
+        <div class="alert bg-warning p-2" style="color:#000">
+            <i class="fa fa-exclamation-circle"></i> <b>Penting!</b><br />
+            <ol class="pl-5">
+                <li><small style="font-size:90%">Kami merekomendasikan Anda untuk menggunakan <u>Gmail</u>.</small>
+                </li>
+                <li><small style="font-size: 90%">Pastikan email yang diketikkan sudah benar dan <u>masih aktif</u>
+                        agar proses pengiriman informasi akun tidak terkendala.</small></li>
+            </ol>
+        </div>
+    @endif
+
+    <div class="row m-t-30 mb-2">
+        <div class="col-md-12">
+            <div class="text-center">
+                <button type="submit" class="btn btn-primary btn-md btn-block waves-effect waves-light text-center">
+                    @if (empty($get))
+                        <i class="fa fa-arrow-circle-right"></i> Selanjutnya
+                    @else
+                        <i class="fa fa-send"></i> Konfirmasi
+                    @endif
+                </button>
+            </div>
+            <br>
+            <div class="border border-primary rounded p-2 text-center mb-2">
+                <span style="color:#000">Sudah punya akun?</span> <a href="{{ route('auth.login') }}"
+                    class="text-primary" style="font-size:12px">Login disini</a> <br>
+            </div>
+            <div class="border border-danger rounded p-2 text-center">
+                <a href="{{ route('frontend.beranda') }}" class="text-danger" style="font-size:12px">Kembali ke Halaman
+                    Utama</a>
+            </div>
+        </div>
+    </div>
+    </form>
+</div>
